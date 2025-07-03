@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "author": "Mathieu",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-s3-devkitc-1", "id": "esp1", "top": 5.49, "left": 156.84, "attrs": {} },
+    {
+      "type": "wokwi-neopixel-canvas",
+      "id": "strip1",
+      "top": 44.27,
+      "left": -146.03,
+      "rotate": 270,
+      "attrs": { "rows": "1", "cols": "60", "matrixBrightness": "255" }
+    }
+  ],
+  "connections": [
+    [ "esp1:GND.1", "strip1:VSS", "black", [] ],
+    [ "esp1:3V3.1", "strip1:VDD", "red", [] ],
+    [ "esp1:48", "strip1:DIN", "green", [] ]
+  ],
+  "dependencies": {}
+}
