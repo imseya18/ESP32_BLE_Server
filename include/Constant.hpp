@@ -15,6 +15,7 @@ static constexpr uint8_t END_FLAG = 0x83;
 static constexpr uint8_t RED_VALUE_POS = 2;
 static constexpr uint8_t GREEN_VALUE_POS = 3;
 static constexpr uint8_t BLUE_VALUE_POS = 4;
+static constexpr uint8_t BRIGHTNESS_POS = 2;
 static constexpr uint8_t PAYLOAD_SIZE = 7;
 static constexpr uint8_t COMMAND_POS = 5;
 static constexpr uint8_t SEGMENT_POS = 1;
@@ -23,6 +24,8 @@ static constexpr uint8_t SEGMENT_POS = 1;
 enum  cmd : uint8_t {
     LED_COLOR = 0x01,
     BRIGHTNESS = 0x02,
+    LED_ON = 0x03,
+    LED_OFF = 0x04,
 };
 
 //LED STRIP
