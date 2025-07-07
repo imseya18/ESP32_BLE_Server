@@ -2,7 +2,10 @@
 #include "Constant.hpp"
 #include "FastLED.h"
 
-StripCallBacks::StripCallBacks(CRGBArray<LED_COUNT>& ledsRef, std::vector<CRGBSet>& segmentsRef) : _leds(ledsRef), _segments(segmentsRef) {}
+
+StripCallBacks::StripCallBacks(LedController& led_controller) : _led_controller(led_controller)
+{
+}
 
 StripCallBacks::~StripCallBacks()
 {
@@ -28,15 +31,20 @@ void StripCallBacks::onWrite(NimBLECharacteristic* payload, NimBLEConnInfo& conn
             case LED_COLOR: {
                 u_int8_t segment_index =raw_data[SEGMENT_POS];
                 CRGB rgbval(raw_data[RED_VALUE_POS],raw_data[GREEN_VALUE_POS], raw_data[BLUE_VALUE_POS]);
-                _segments[segment_index].fill_solid(rgbval);
+                _led_controller.setLedColor(segment_index, rgbval);
                 break;
             }
-
             case BRIGHTNESS: {
                 Serial.printf("BRIGHTNESS Command trigered");
+                _led_controller.setBrightness(raw_data[BRIGHTNESS_POS]);
                 break;
             }
-
+            case LED_ON: {
+                _led_controller.setLedsOn();
+            }
+            case LED_OFF:{
+                _led_controller.setLedsOff();
+            }
             default:{
                 Serial.printf("Not a Valide Command");
                 break;
