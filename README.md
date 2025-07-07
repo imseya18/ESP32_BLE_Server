@@ -60,8 +60,8 @@ The project includes `diagram.json` and `wokwi.toml` to visualize the ESP32-S3 a
 | ---------- | ---------------------------------------- |
 | 0          | `START_FLAG` (0x38)                      |
 | 1          | `SEGMENT_ID` (0–14)                      |
-| 2          | Green component (0–255)                  |
-| 3          | Red component (0–255)                    |
+| 2          | Red component (0–255)                    |
+| 3          | Green component (0–255)                  |
 | 4          | Blue component (0–255)                   |
 | 5          | `COMMAND` (0x01=color, 0x02=brightness…) |
 | 6          | `END_FLAG` (0x83)                        |

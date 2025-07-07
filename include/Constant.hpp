@@ -8,16 +8,22 @@ static const NimBLEUUID UUID_LED_COLOR("b18d531d-0d2e-4315-b253-677c0b9bdf72");
 
 
 
-//PAYLOAD STRUCTURE = [STARTFLAG, SEGMENT_NUMBER, GREEN, RED, BLUE, COMMAND, ENDFLAG]
+//PAYLOAD STRUCTURE = [STARTFLAG, SEGMENT_NUMBER, RED, GREEN, BLUE, COMMAND, ENDFLAG]
 //PAYLOAD
 static constexpr uint8_t START_FLAG = 0x38;
 static constexpr uint8_t END_FLAG = 0x83;
+static constexpr uint8_t RED_VALUE_POS = 2;
+static constexpr uint8_t GREEN_VALUE_POS = 3;
+static constexpr uint8_t BLUE_VALUE_POS = 4;
 static constexpr uint8_t PAYLOAD_SIZE = 7;
 static constexpr uint8_t COMMAND_POS = 5;
-//COMMANDE HEX
+static constexpr uint8_t SEGMENT_POS = 1;
 
-#define LED_COLOR 0x01
-#define BRIGHTNESS 0x02
+//COMMANDE HEX
+enum  cmd : uint8_t {
+    LED_COLOR = 0x01,
+    BRIGHTNESS = 0x02,
+};
 
 //LED STRIP
 static constexpr uint8_t LED_PIN   = 48;
