@@ -6,6 +6,8 @@
 
 static CRGBArray<LED_COUNT> leds;
 static std::vector<CRGBSet> segments;
+static LedController led_controller(leds, segments);
+static StripCallBacks strip_callbacks(led_controller);
 
 void initLed() {
     Serial.println("LED initialization");
@@ -29,8 +31,7 @@ void initBle() {
     NimBLECharacteristic *pCharacteristic = pService->createCharacteristic(UUID_LED_COLOR, NIMBLE_PROPERTY::WRITE_NR);
     pServer->addService(pService);
     pService->addCharacteristic(pCharacteristic);
-    LedController led_controller(leds, segments);
-    pCharacteristic->setCallbacks(new StripCallBacks(led_controller));
+    pCharacteristic->setCallbacks(&strip_callbacks);
     pService->start();
     pServer->getAdvertising()->addServiceUUID(UUID_SERVICE);
     pServer->getAdvertising()->setName("WitekioLed");
@@ -40,11 +41,13 @@ void initBle() {
 
 void setup() {
     Serial.begin(115200);
+    esp_log_level_set("*", ESP_LOG_DEBUG);
+    Serial.setDebugOutput(true);
     initLed();
     initBle();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-    delay(1000);    
+  
 }

@@ -29,7 +29,7 @@ enum  cmd : uint8_t {
 };
 
 //LED STRIP
-static constexpr uint8_t LED_PIN   = 48;
+static constexpr uint8_t LED_PIN   = 16;
 static constexpr uint16_t LED_COUNT = 60;
 static constexpr uint8_t SEGMENT_NUMBER = 15; // Equal to number of card spot on the testbench
 static constexpr uint8_t SEGMENT_SIZE = LED_COUNT / SEGMENT_NUMBER;
