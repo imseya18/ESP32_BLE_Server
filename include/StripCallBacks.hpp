@@ -11,7 +11,7 @@
 class StripCallBacks : public NimBLECharacteristicCallbacks
 {
     public:
-        StripCallBacks(LedController& led_controller);
+        StripCallBacks(QueueHandle_t& cmdQueue);
         ~StripCallBacks();
         /*
          Can't copy the class because it contains references to external objects.
@@ -23,7 +23,7 @@ class StripCallBacks : public NimBLECharacteristicCallbacks
         
         void onWrite(NimBLECharacteristic* payload, NimBLEConnInfo& connInfo) override;
     private:
-      LedController& _led_controller;
+      QueueHandle_t& _cmdQueue;
       StripCallBacks() = delete;
 
       bool is_valide_payload(const NimBLEAttValue* payload) const;

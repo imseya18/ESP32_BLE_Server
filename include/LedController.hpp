@@ -7,7 +7,8 @@
 #include "NimBLEDevice.h"
 #include <FastLED.h>
 #include "Constant.hpp"
-
+#include <freertos/FreeRTOS.h>    
+#include <freertos/queue.h>
 class LedController
 {
     public:
@@ -22,10 +23,10 @@ class LedController
         ~LedController();
 
 
-        void setLedColor(u_int8_t segment_index, CRGB rgbval);
+        void setLedColor(u_int8_t segment_index, CRGB rgbval) const;
         void setBrightness(u_int8_t brightness_value);
-        void setLedsOn();
-        void setLedsOff();
+        void setLedsOn() const;
+        void setLedsOff() const;
         
     private:
       LedController() = delete;

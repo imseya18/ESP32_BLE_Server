@@ -10,16 +10,16 @@ static const NimBLEUUID UUID_LED_COLOR("b18d531d-0d2e-4315-b253-677c0b9bdf72");
 
 //PAYLOAD STRUCTURE = [STARTFLAG, SEGMENT_NUMBER, RED, GREEN, BLUE, COMMAND, ENDFLAG]
 //PAYLOAD
-static constexpr uint8_t START_FLAG = 0x38;
-static constexpr uint8_t END_FLAG = 0x83;
-static constexpr uint8_t RED_VALUE_POS = 2;
-static constexpr uint8_t GREEN_VALUE_POS = 3;
-static constexpr uint8_t BLUE_VALUE_POS = 4;
-static constexpr uint8_t BRIGHTNESS_POS = 2;
-static constexpr uint8_t PAYLOAD_SIZE = 7;
-static constexpr uint8_t COMMAND_POS = 5;
-static constexpr uint8_t SEGMENT_POS = 1;
-
+constexpr uint8_t START_FLAG = 0x38;
+constexpr uint8_t END_FLAG = 0x83;
+constexpr uint8_t RED_VALUE_POS = 2;
+constexpr uint8_t GREEN_VALUE_POS = 3;
+constexpr uint8_t BLUE_VALUE_POS = 4;
+constexpr uint8_t BRIGHTNESS_POS = 2;
+constexpr uint8_t PAYLOAD_SIZE = 7;
+constexpr uint8_t COMMAND_POS = 5;
+constexpr uint8_t SEGMENT_POS = 1;
+constexpr uint8_t QUEUE_LENGTH = 16;
 //COMMANDE HEX
 enum  cmd : uint8_t {
     LED_COLOR = 0x01,
@@ -29,7 +29,7 @@ enum  cmd : uint8_t {
 };
 
 //LED STRIP
-static constexpr uint8_t LED_PIN   = 16;
-static constexpr uint16_t LED_COUNT = 60;
-static constexpr uint8_t SEGMENT_NUMBER = 15; // Equal to number of card spot on the testbench
-static constexpr uint8_t SEGMENT_SIZE = LED_COUNT / SEGMENT_NUMBER;
+constexpr uint8_t LED_PIN   = 16;
+constexpr uint16_t LED_COUNT = 60;
+constexpr uint8_t SEGMENT_NUMBER = 15; // Equal to number of card spot on the testbench
+constexpr uint8_t SEGMENT_SIZE = LED_COUNT / SEGMENT_NUMBER;

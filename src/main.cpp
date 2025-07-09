@@ -2,15 +2,21 @@
 #include "NimBLEDevice.h"
 #include "Constant.hpp"
 #include "StripCallBacks.hpp"
+#include <freertos/FreeRTOS.h>    
+#include <freertos/queue.h>
 #include <FastLED.h>
+
+
 
 static CRGBArray<LED_COUNT> leds;
 static std::vector<CRGBSet> segments;
+static QueueHandle_t cmdQueue = nullptr;
+static StripCallBacks stripCB(cmdQueue);
 static LedController led_controller(leds, segments);
-static StripCallBacks strip_callbacks(led_controller);
+const char* TAG = "Main";
 
 void initLed() {
-    Serial.println("LED initialization");
+    ESP_LOGD(TAG, "LED initialization");
     FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, LED_COUNT);
     FastLED.setCorrection(TypicalLEDStrip);
     FastLED.setMaxPowerInVoltsAndMilliamps(5, 4000);
@@ -20,34 +26,69 @@ void initLed() {
         segments.push_back(leds(start, end));
     }  
     
-    Serial.println("LED Ready");
+    ESP_LOGD(TAG, "LED Ready");
 }
 
 void initBle() {
-    Serial.println("BLE initialization");
+    ESP_LOGD(TAG, "BLE initialization");
     NimBLEDevice::init("WitekioLed");
     NimBLEServer *pServer = NimBLEDevice::createServer();
     NimBLEService *pService = pServer->createService(UUID_SERVICE);
     NimBLECharacteristic *pCharacteristic = pService->createCharacteristic(UUID_LED_COLOR, NIMBLE_PROPERTY::WRITE_NR);
     pServer->addService(pService);
     pService->addCharacteristic(pCharacteristic);
-    pCharacteristic->setCallbacks(&strip_callbacks);
+    cmdQueue = xQueueCreate(16, PAYLOAD_SIZE);
+    if (cmdQueue == nullptr) {
+        Serial.println("Erreur : impossible de créer la queue");
+        while(true);
+    }
+    pCharacteristic->setCallbacks(&stripCB);
     pService->start();
     pServer->getAdvertising()->addServiceUUID(UUID_SERVICE);
     pServer->getAdvertising()->setName("WitekioLed");
     pServer->getAdvertising()->start();
-    Serial.println("BLE Ready");
+    ESP_LOGD(TAG, "BLE Ready");
 }
 
 void setup() {
     Serial.begin(115200);
-    esp_log_level_set("*", ESP_LOG_DEBUG);
-    Serial.setDebugOutput(true);
     initLed();
     initBle();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  
-}
+  uint8_t raw_buffer[PAYLOAD_SIZE];                    
+  while (xQueueReceive(cmdQueue, raw_buffer, pdMS_TO_TICKS(20)) == pdTRUE) {
+    ESP_LOGD(TAG ,"queue commande received");
+         switch (raw_buffer[COMMAND_POS])
+         {
+             case LED_COLOR: {
+                 ESP_LOGD(TAG ,"LED_COLOR Command trigered");
+                 u_int8_t segment_index = raw_buffer[SEGMENT_POS];
+                 CRGB rgbval(raw_buffer[RED_VALUE_POS],raw_buffer[GREEN_VALUE_POS], raw_buffer[BLUE_VALUE_POS]);
+                 led_controller.setLedColor(segment_index, rgbval);
+                 break;
+             }
+             case BRIGHTNESS: {
+                 ESP_LOGD(TAG ,"BRIGHTNESS Command trigered");
+                 led_controller.setBrightness(raw_buffer[BRIGHTNESS_POS]);
+                 break;
+             }
+             case LED_ON: {
+                 ESP_LOGD(TAG ,"LED_ON Command trigered");
+                 led_controller.setLedsOn();
+                 break;
+             }
+             case LED_OFF:{
+                 ESP_LOGD(TAG ,"LED_OFF Command trigered");
+                 led_controller.setLedsOff();
+                 break;
+             }
+             default:{
+                 ESP_LOGW(TAG ,"Not a valid command");
+                 break;
+             }
+         }
+    }
+        FastLED.show();
+}  
