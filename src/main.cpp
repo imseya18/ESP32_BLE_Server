@@ -37,9 +37,9 @@ void initBle() {
     NimBLECharacteristic *pCharacteristic = pService->createCharacteristic(UUID_LED_COLOR, NIMBLE_PROPERTY::WRITE_NR);
     pServer->addService(pService);
     pService->addCharacteristic(pCharacteristic);
-    cmdQueue = xQueueCreate(16, PAYLOAD_SIZE);
+    cmdQueue = xQueueCreate(30, PAYLOAD_SIZE);
     if (cmdQueue == nullptr) {
-        Serial.println("Erreur : impossible de créer la queue");
+        ESP_LOGE(TAG ,"Queue Creation Failed");
         while(true);
     }
     pCharacteristic->setCallbacks(&stripCB);

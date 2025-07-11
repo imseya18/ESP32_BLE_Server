@@ -23,8 +23,8 @@ class LedController
         ~LedController();
 
 
-        void setLedColor(u_int8_t segment_index, CRGB rgbval) const;
-        void setBrightness(u_int8_t brightness_value);
+        void setLedColor(uint8_t segment_index, CRGB rgbval) const;
+        void setBrightness(uint8_t brightness_value);
         void setLedsOn() const;
         void setLedsOff() const;
         

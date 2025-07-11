@@ -50,7 +50,7 @@ std::vector<uint8_t> wrong_end_flag_value_raw = {
   END_FLAG + 1,          
 };
 
-bool is_valide_payload(const NimBLEAttValue* payload) {
+bool isValidPayload(const NimBLEAttValue* payload) {
         if(!payload)
             return false;
         if (payload->length() != PAYLOAD_SIZE)
@@ -64,41 +64,41 @@ bool is_valide_payload(const NimBLEAttValue* payload) {
 }
 
 
-void test_valid_payload() {
+void testValidePayload() {
   NimBLEAttValue valide_payload(valide_payload_raw); 
-  TEST_ASSERT_EQUAL(true, is_valide_payload(&valide_payload));
+  TEST_ASSERT_EQUAL(true, isValidPayload(&valide_payload));
 }
 
-void test_wrong_size_payload() {
+void testWrongSizePayload() {
   NimBLEAttValue too_long_payload(too_long_payload_raw);
   NimBLEAttValue too_short_payload(too_short_payload_raw);
-  TEST_ASSERT_EQUAL(false, is_valide_payload(&too_long_payload));
-  TEST_ASSERT_EQUAL(false, is_valide_payload(&too_short_payload));
+  TEST_ASSERT_EQUAL(false, isValidPayload(&too_long_payload));
+  TEST_ASSERT_EQUAL(false, isValidPayload(&too_short_payload));
 }
 
-void test_segment_pos(){
+void testSegmentPos(){
     NimBLEAttValue wrong_segment_value(wrong_segment_value_raw);
-    TEST_ASSERT_EQUAL(false, is_valide_payload(&wrong_segment_value));
+    TEST_ASSERT_EQUAL(false, isValidPayload(&wrong_segment_value));
 }
 
-void test_null_payload() {
-    TEST_ASSERT_EQUAL(false, is_valide_payload(nullptr));
+void testNullPayload() {
+    TEST_ASSERT_EQUAL(false, isValidPayload(nullptr));
 }
 
-void test_flag_value(){
+void testflagValue(){
     NimBLEAttValue wrong_start_flag_value(wrong_start_flag_value_raw);
     NimBLEAttValue wrong_end_flag_value(wrong_end_flag_value_raw);
-    TEST_ASSERT_EQUAL(false, is_valide_payload(&wrong_start_flag_value));
-    TEST_ASSERT_EQUAL(false, is_valide_payload(&wrong_end_flag_value));
+    TEST_ASSERT_EQUAL(false, isValidPayload(&wrong_start_flag_value));
+    TEST_ASSERT_EQUAL(false, isValidPayload(&wrong_end_flag_value));
 }
 
 void setup() {
   UNITY_BEGIN();
-  RUN_TEST(test_valid_payload);
-  RUN_TEST(test_wrong_size_payload);
-  RUN_TEST(test_segment_pos);
-  RUN_TEST(test_null_payload);
-  RUN_TEST(test_flag_value);
+  RUN_TEST(testValidePayload);
+  RUN_TEST(testWrongSizePayload);
+  RUN_TEST(testSegmentPos);
+  RUN_TEST(testNullPayload);
+  RUN_TEST(testflagValue);
   UNITY_END();
 }
 

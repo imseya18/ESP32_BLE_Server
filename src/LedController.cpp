@@ -12,14 +12,14 @@ LedController::~LedController()
 
 }
 
-void LedController::setLedColor(u_int8_t segment_index, CRGB rgbval) const
+void LedController::setLedColor(uint8_t segment_index, CRGB rgbval) const
 {   
      _segments[segment_index].fill_solid(rgbval);
      FastLED.show();
      ESP_LOGD(TAG, "Color set to: R:%i G:%i B:%i on segment: %i", rgbval.r ,rgbval.g, rgbval.b , segment_index);
 }
 
-void LedController::setBrightness(u_int8_t brightness_value) 
+void LedController::setBrightness(uint8_t brightness_value) 
 {
     _saved_brightness = brightness_value;
     FastLED.setBrightness(brightness_value);

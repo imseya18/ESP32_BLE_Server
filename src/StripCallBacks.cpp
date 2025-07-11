@@ -19,7 +19,7 @@ void StripCallBacks::onWrite(NimBLECharacteristic* payload, NimBLEConnInfo& conn
         const NimBLEAttValue payload_value = payload->getValue();
         const uint16_t payload_size = payload_value.length();
         const uint8_t * raw_data = payload_value.data();
-        if(!is_valide_payload(&payload_value))
+        if(!isValidePayload(&payload_value))
         {
             ESP_LOGW(TAG, "Invalid payload");
             return;
@@ -27,7 +27,7 @@ void StripCallBacks::onWrite(NimBLECharacteristic* payload, NimBLEConnInfo& conn
         xQueueSend(_cmdQueue, raw_data, 0);
 }
 
-bool StripCallBacks::is_valide_payload(const NimBLEAttValue* payload) const {
+bool StripCallBacks::isValidePayload(const NimBLEAttValue* payload) const {
         if (payload->length() != PAYLOAD_SIZE){
             ESP_LOGD(TAG, "Invalid payload length=%u", payload->length());
             return false;

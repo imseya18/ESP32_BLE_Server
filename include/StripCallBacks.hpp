@@ -26,7 +26,7 @@ class StripCallBacks : public NimBLECharacteristicCallbacks
       QueueHandle_t& _cmdQueue;
       StripCallBacks() = delete;
 
-      bool is_valide_payload(const NimBLEAttValue* payload) const;
+      bool isValidePayload(const NimBLEAttValue* payload) const;
 
 };
 
