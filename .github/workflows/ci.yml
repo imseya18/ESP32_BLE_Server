@@ -1,0 +1,35 @@
+name: CI PlatformIO
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache PlatformIO
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.platformio
+            ./.pio/libdeps
+          key: ${{ runner.os }}-platformio-${{ hashFiles('**/platformio.ini') }}
+          restore-keys: |
+            ${{ runner.os }}-platformio-
+
+      - name: Install PlatformIO CLI
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install platformio
+
+      - name: PlatformIO info
+        run: pio --version && pio system info
+
+      - name: Build firmware
+        run: pio run --environment esp32-s3-devkitc-1
