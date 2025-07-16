@@ -32,6 +32,7 @@ void initBle() {
     ESP_LOGD(TAG, "BLE initialization");
     NimBLEDevice::init("WitekioLed");
     NimBLEServer *pServer = NimBLEDevice::createServer();
+    pServer->advertiseOnDisconnect(true);
     NimBLEService *pService = pServer->createService(UUID_SERVICE);
     NimBLECharacteristic *pCharacteristic = pService->createCharacteristic(
         UUID_LED_COLOR, NIMBLE_PROPERTY::WRITE_NR);
