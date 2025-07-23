@@ -51,6 +51,7 @@ void initBle() {
     pCharacteristic->setCallbacks(&stripCB);
     pService->start();
     pServer->getAdvertising()->addServiceUUID(UUID_SERVICE);
+    pServer->getAdvertising()->enableScanResponse(true);
     pServer->getAdvertising()->setName("WitekioLed");
     pServer->getAdvertising()->start();
     ESP_LOGD(TAG, "BLE Ready");
