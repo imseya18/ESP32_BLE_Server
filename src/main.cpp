@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <FastLED.h>
+#include <Preferences.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/queue.h>
 
@@ -12,7 +13,11 @@ static std::vector<CRGBSet> segments;
 static QueueHandle_t cmdQueue = nullptr;
 static StripCallBacks stripCB(cmdQueue);
 static LedController led_controller(leds, segments);
-const char *TAG = "Main";
+static const char *TAG = "Main";
+// size of 3 to represente each RGB value
+std::vector<std::array<u_int8_t, 3>> persistent_rgb_value(SEGMENT_NUMBER,
+                                                          {0, 0, 0});
+Preferences persistent_state;
 
 void initLed() {
     ESP_LOGD(TAG, "LED initialization");
@@ -24,7 +29,7 @@ void initLed() {
         uint8_t end = start + SEGMENT_SIZE - 1;
         segments.push_back(leds(start, end));
     }
-
+    led_controller.initLedFromPersistentState();
     ESP_LOGD(TAG, "LED Ready");
 }
 
@@ -69,6 +74,8 @@ void loop() {
                             raw_buffer[GREEN_VALUE_POS],
                             raw_buffer[BLUE_VALUE_POS]);
                 led_controller.setLedColor(segment_index, rgbval);
+                led_controller.saveColorsToPersistentState(segment_index,
+                                                           raw_buffer);
                 break;
             }
             case BRIGHTNESS: {

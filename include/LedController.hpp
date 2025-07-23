@@ -3,6 +3,7 @@
 #pragma once
 
 #include <FastLED.h>
+#include <Preferences.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/queue.h>
 
@@ -11,6 +12,9 @@
 
 #include "Constant.hpp"
 #include "NimBLEDevice.h"
+
+extern std::vector<std::array<u_int8_t, 3>> persistent_rgb_value;
+extern Preferences persistent_state;
 class LedController {
    public:
     LedController(CRGBArray<LED_COUNT> &ledsRef,
@@ -29,8 +33,14 @@ class LedController {
     void setLedsOn() const;
     void setLedsOff() const;
 
+    void setLedsFromPersistentStates();
+    void initLedFromPersistentState();
+    void saveColorsToPersistentState(uint8_t segment_index,
+                                     uint8_t *raw_buffer);
+
    private:
     LedController() = delete;
+    boolean getLedsColorsFromPersistentState();
     u_int8_t _saved_brightness;
     CRGBArray<LED_COUNT> &_leds;
     std::vector<CRGBSet> &_segments;

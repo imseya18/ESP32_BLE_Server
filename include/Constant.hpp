@@ -32,3 +32,7 @@ constexpr uint16_t LED_COUNT = 60;
 constexpr uint8_t SEGMENT_NUMBER =
     15;  // Equal to number of card spot on the testbench
 constexpr uint8_t SEGMENT_SIZE = LED_COUNT / SEGMENT_NUMBER;
+
+// PERSISTENT STORE
+#define STORE_NAME "ledsColors"
+#define STORE_LEDS_KEY "colors"
