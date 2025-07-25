@@ -22,7 +22,7 @@ A client application (e.g., Tauri, nRF Connect, or any BLE-enabled app) can send
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/imseya18/ESP32_BLE_Server.git
+   git clone git@gitlab.com:witekio/rnd/b0000-witekio-welma/test-bench-vizualizer/esp32-ble-server.gitgithub.com/imseya18/ESP32_BLE_Server.git
    cd ESP32_BLE_Server
    ```
 2. Open the project in VS Code + PlatformIO, or build from the command line:
